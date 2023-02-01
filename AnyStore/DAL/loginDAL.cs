@@ -1,4 +1,4 @@
-﻿using AnyStore.BLL;
+using AnyStore.BLL;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,23 +13,23 @@ namespace AnyStore.DAL
 {
     class loginDAL
     {
-        //Static String to Connect Database
+        //სტატიკური სტრინგი ბაზასთან დასაკავშირებლად
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
         public bool loginCheck(loginBLL l)
         {
-            //Create a boolean variable and set its value to false and return it
+            // გავაკეთოთ ბულენ ცვლადი მივანიჭოთ მნიშვნელობა და დავაბრინოთ
             bool isSuccess = false;
 
-            //Connecting To DAtabase
+            //ბაზასთან კავშირი
             SqlConnection conn = new SqlConnection(myconnstrng);
 
             try
             {
-                //SQL Query to check login
+                // სქლ ქვერი ლოგინის შესამოწმებლად
                 string sql = "SELECT * FROM tbl_users WHERE username=@username AND password=@password AND user_type=@user_type";
 
-                //Creating SQL Command to pass value
+                // სქლის ბრძანება მნიშვნელობის გადასაცემად
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@username", l.username);
@@ -42,15 +42,15 @@ namespace AnyStore.DAL
 
                 adapter.Fill(dt);
 
-                //Checking The rows in DataTable 
+                //რიგების შემოწმება ცხრილში 
                 if(dt.Rows.Count>0)
                 {
-                    //Login Sucessful
+                    // წარამტებული დალოგინება
                     isSuccess = true;
                 }
                 else
                 {
-                    //Login Failed
+                    //აპლიკაციაში უშედეგო შესვლა
                     isSuccess = false;
                 }
             }
