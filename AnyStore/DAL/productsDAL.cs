@@ -1,4 +1,4 @@
-﻿using AnyStore.BLL;
+using AnyStore.BLL;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,30 +13,30 @@ namespace AnyStore.DAL
 {
     class productsDAL
     {
-        //Creating STATI String Method for DB Connection
+        //სტრინგ მეთოდ ბაზასთან კავშირი
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
         #region Select method for Product Module
         public DataTable Select()
         {
-            //Create Sql Connection to connect Databaes
+            //ბაზასთან კავშირი
             SqlConnection conn = new SqlConnection(myconnstrng);
 
-            //DAtaTable to hold the data from database
+       
             DataTable dt = new DataTable();
 
             try
             {
-                //Writing the Query to Select all the products from database
+                //ქვერი ბაზიდან ყველა პროდუქტისთვის
                 String sql = "SELECT * FROM tbl_products";
 
-                //Creating SQL Command to Execute Query
+                //სქლ ბრძანება ქვერის გასაშვებად
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                //SQL Data Adapter to hold the value from database temporarily
+                //დროებითი ცვლადის შენახვა
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
 
-                //Open DAtabase Connection
+                //დატაბეის კავშირის გახსნა
                 conn.Open();
 
                 adapter.Fill(dt);
@@ -56,21 +56,21 @@ namespace AnyStore.DAL
         #region Method to Insert Product in database
         public bool Insert(productsBLL p)
         {
-            //Creating Boolean Variable and set its default value to false
+            //ბულენი დეფაულთ მნიშვნელობა უარყოფითი
             bool isSuccess = false;
 
-            //Sql Connection for DAtabase
+            
             SqlConnection conn = new SqlConnection(myconnstrng);
 
             try
             {
-                //SQL Query to insert product into database
+                //ბაზაში პროდუქტის ჩასმა
                 String sql = "INSERT INTO tbl_products (name, category, description, rate, qty, added_date, added_by) VALUES (@name, @category, @description, @rate, @qty, @added_date, @added_by)";
 
-                //Creating SQL Command to pass the values
+                
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                //Passign the values through parameters
+                //პარამეტრები გადასაცემად
                 cmd.Parameters.AddWithValue("@name", p.name);
                 cmd.Parameters.AddWithValue("@category", p.category);
                 cmd.Parameters.AddWithValue("@description", p.description);
@@ -79,20 +79,20 @@ namespace AnyStore.DAL
                 cmd.Parameters.AddWithValue("@added_date", p.added_date);
                 cmd.Parameters.AddWithValue("@added_by", p.added_by);
 
-                //Opening the Database connection
+                
                 conn.Open();
 
                 int rows = cmd.ExecuteNonQuery();
 
-                //If the query is executed successfully then the value of rows will be greater than 0 else it will be less than 0
+                //თუ სწორად გაეშვება მაშ მნიშვნელობა გახდება 0ზე მეტი წინ შემთხვევაში 0-ზე ნაკლები
                 if(rows>0)
                 {
-                    //Query Executed Successfully
+                    //წარმატებული
                     isSuccess = true;
                 }
                 else
                 {
-                    //FAiled to Execute Query
+                    //წარუმატებელი
                     isSuccess = false;
                 }
             }
